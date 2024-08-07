@@ -142,14 +142,14 @@ public class MyLinkedList {
 
     public static void main(String[] args) {
         MyLinkedList list = new MyLinkedList();
-        list.add("Ivan");
-        list.add("Dan");
+        list.add("Discoshar");
+        list.add("Homyak");
 
         list.print();
         System.out.println();
 
-        list.add("Mom", 0);
-        list.add("Dad", 0);
+        list.add("Joe", 0);
+        list.add("Biden", 0);
 
         list.print();
 
