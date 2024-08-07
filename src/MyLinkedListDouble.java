@@ -157,6 +157,7 @@ public class MyLinkedListDouble {
 
         list.delete(2);
         list.print();
+
     }
 
 }
