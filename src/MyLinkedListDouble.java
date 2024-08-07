@@ -161,6 +161,7 @@ public class MyLinkedListDouble {
         list.delete(2);
         System.out.println(list.get(2));
         list.print();
+
     }
 
 }
