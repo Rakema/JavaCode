@@ -7,9 +7,13 @@ public class MyLinkedListDouble {
     static class Node {
         String value;
         Node next;
-        public Node(String value, Node next) {
+
+        Node previous;
+
+        public Node(String value, Node next, Node previous) {
             this.value = value;
             this.next = next;
+            this.previous = previous;
         }
     }
 
@@ -18,8 +22,15 @@ public class MyLinkedListDouble {
         tail = null;
     }
 
+    public void checkIndex(int index) {
+        if (index > size || index < 0) {
+            throw new RuntimeException("Введенный индекс больше/меньше чем размер");
+        }
+    }
+
     public void add(String element) {
-        Node tmp = new Node(element, null);
+
+        Node tmp = new Node(element, null, null);
 
         if (head == null) {
             head = tmp;
@@ -29,20 +40,19 @@ public class MyLinkedListDouble {
 
         Node oldTail = tail;
         tail = tmp;
+        tail.previous = oldTail;
         oldTail.next = tail;
         size++;
     }
 
     public void add(String element, int index) {
 
-        if (index > size || index < 0) {
-            throw new RuntimeException("Введенный индекс больше/меньше чем размер");
-        }
+        checkIndex(index);
 
         if (index == 0) {
             Node tmpHead = head;
-            head = new Node(element, tmpHead);
-
+            head = new Node(element, tmpHead, null);
+            tmpHead.previous = head;
             size++;
             return;
         }
@@ -50,21 +60,21 @@ public class MyLinkedListDouble {
         Node tmpHead = head;
         Node tmpPrev = null;
 
-        for (int i = 0; i <= index; i++) {
+        for (int i = 0; i < index; i++) {
             tmpPrev = tmpHead;
             tmpHead = tmpHead.next;
         }
 
-        Node node = new Node(element, tmpHead);
+        Node node = new Node(element, tmpHead, tmpHead.previous);
         tmpPrev.next = node;
+        tmpHead.previous = node;
+        node.previous = tmpPrev;
         size++;
     }
 
     public String get(int index) {
 
-        if (index > size || index < 0) {
-            throw new RuntimeException("Введенный индекс больше/меньше чем размер");
-        }
+        checkIndex(index);
 
         if(index == 0) {
             return head.value;
@@ -85,23 +95,15 @@ public class MyLinkedListDouble {
 
     public String delete(int index) {
 
-        if (index > size || index < 0) {
-            throw new RuntimeException("Введенный индекс больше/меньше чем размер");
-        }
+        checkIndex(index);
 
         Node deletedNode;
 
         if(index == size) {
 
-            Node tmpHead = head;
-
-            for (int i = 0; i < size - 1; i++) {
-                tmpHead = tmpHead.next;
-            }
-
-            deletedNode = tmpHead.next;
-            tmpHead.next = null;
-            tail = tmpHead;
+            tail = tail.previous;
+            deletedNode = tail.next;
+            tail.next = null;
 
             size--;
             return deletedNode.value;
@@ -110,22 +112,21 @@ public class MyLinkedListDouble {
         if(index == 0) {
 
             Node tmpHead = head;
-            Node tmpNext = tmpHead.next;
-
-            head = tmpNext;
+            head = tmpHead.next;
 
             size--;
             return tmpHead.value;
         }
 
         Node currentNode = head;
-        Node prevNode = null;
 
         for (int i = 0; i < index; i++) {
-            prevNode = currentNode;
             currentNode = currentNode.next;
         }
+
+        Node prevNode = currentNode.previous;
         prevNode.next = currentNode.next;
+        currentNode.next.previous = prevNode;
 
         size--;
         return currentNode.value;
@@ -142,21 +143,23 @@ public class MyLinkedListDouble {
 
     public static void main(String[] args) {
         MyLinkedListDouble list = new MyLinkedListDouble();
-        list.add("Ivan");
-        list.add("Dan");
+        list.add("Joe");
+        list.add("Biden");
 
         list.print();
         System.out.println();
 
-        list.add("Mom", 0);
-        list.add("Dad", 0);
+        list.add("Element1", 0);
+        list.add("NewElement2", 2);
 
         list.print();
 
-        System.out.println("\n" + list.get(2));
+        System.out.println("\n" + list.get(1));
 
         list.delete(2);
+        System.out.println(list.get(2));
         list.print();
+
     }
 
 }
