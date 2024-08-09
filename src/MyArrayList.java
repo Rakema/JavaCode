@@ -79,9 +79,10 @@ public class MyArrayList {
         System.out.println("Index: " + index + " | " + "Value: " + arrayList[index]);
     }
 
-    public void delete(int index) {
+    public String delete(int index) {
 
         checkIndex(index);
+        String deletedValue = arrayList[index];
 
         String[] tmpArrayList = new String[capacity];
 
@@ -98,6 +99,7 @@ public class MyArrayList {
 
         size--;
         updateCapacity();
+        return deletedValue;
     }
 
     public void print() {
