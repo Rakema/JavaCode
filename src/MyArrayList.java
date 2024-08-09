@@ -1,15 +1,42 @@
 public class MyArrayList {
-    private int capacity = 8;
-    private int size = 0;
-    private float loadFactor = 0.75f;
-    private String[] arrayList = new String[capacity];
 
-    private void checkIndex(int index) {
+    private int capacity;
+    private float loadFactor;
+    private int size;
+    private static final int DEFAULT_CAPACITY = 8;
+    private static final float DEFAULT_LOAD_FACTOR = 0.75f;
+    private String[] arrayList;
 
-        if(index > size || index < 0) {
-            throw new RuntimeException("Некорректный индекс");
-        }
+    public MyArrayList() {
+        capacity = DEFAULT_CAPACITY;
+        loadFactor = DEFAULT_LOAD_FACTOR;
+        arrayList = new String[capacity];
+    }
 
+    public MyArrayList(int capacity, float loadFactor) {
+        this.capacity = capacity;
+        this.loadFactor = loadFactor;
+        arrayList = new String[capacity];
+    }
+
+    public MyArrayList(int capacity) {
+        this.capacity = capacity;
+        loadFactor = DEFAULT_LOAD_FACTOR;
+        arrayList = new String[capacity];
+    }
+
+    private void increaseArrayList() {
+
+        capacity = capacity * 2;
+        updateArrayList();
+        System.out.println("Updated Capacity: " + capacity / 2 + " -> " + capacity);
+    }
+
+    private void decreaseArrayList() {
+
+        capacity = capacity / 2;
+        updateArrayList();
+        System.out.println("Updated Capacity: " + capacity * 2 + " -> " + capacity);
     }
 
     private void updateArrayList() {
@@ -32,21 +59,6 @@ public class MyArrayList {
 
     }
 
-    private void updateCapacity() {
-
-        if (size == capacity * loadFactor) {
-            capacity = capacity * 2;
-            updateArrayList();
-            System.out.println("Updated Capacity: " + capacity / 2 + " -> " + capacity );
-        }
-
-        if (capacity != 8 && size < capacity / 2 * loadFactor) {
-            capacity = capacity / 2;
-            updateArrayList();
-            System.out.println("Updated Capacity: " + capacity * 2 + " -> " + capacity );
-        }
-    }
-
     public void add(String element) {
 
         if(size == 0) {
@@ -57,7 +69,11 @@ public class MyArrayList {
 
         arrayList[size] = element;
         size++;
-        updateCapacity();
+
+        if (size == capacity * loadFactor) {
+            increaseArrayList();
+        }
+
     }
 
     public void add(String element, int index) {
@@ -70,13 +86,16 @@ public class MyArrayList {
 
         arrayList[index] = element;
         size++;
-        updateCapacity();
+
+        if (size == capacity * loadFactor) {
+            increaseArrayList();
+        }
     }
 
-    public void get(int index) {
+    public String get(int index) {
 
         checkIndex(index);
-        System.out.println("Index: " + index + " | " + "Value: " + arrayList[index]);
+        return arrayList[index];
     }
 
     public String delete(int index) {
@@ -98,7 +117,9 @@ public class MyArrayList {
         arrayList = tmpArrayList.clone();
 
         size--;
-        updateCapacity();
+        if (capacity != DEFAULT_CAPACITY && size < capacity / 2 * loadFactor) {
+            decreaseArrayList();
+        }
         return deletedValue;
     }
 
@@ -107,6 +128,14 @@ public class MyArrayList {
             System.out.println("["+ i + "]:" + arrayList[i]);
         }
         System.out.println();
+    }
+
+    private void checkIndex(int index) {
+
+        if(index > size || index < 0) {
+            throw new RuntimeException("Некорректный индекс");
+        }
+
     }
 
     public static void main(String[] args) {
