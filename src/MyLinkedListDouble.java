@@ -22,6 +22,12 @@ public class MyLinkedListDouble {
         tail = null;
     }
 
+    public void checkIndex(int index) {
+        if (index > size || index < 0) {
+            throw new RuntimeException("Введенный индекс больше/меньше чем размер");
+        }
+    }
+
     public void add(String element) {
 
         Node tmp = new Node(element, null, null);
@@ -41,9 +47,7 @@ public class MyLinkedListDouble {
 
     public void add(String element, int index) {
 
-        if (index > size || index < 0) {
-            throw new RuntimeException("Введенный индекс больше/меньше чем размер");
-        }
+        checkIndex(index);
 
         if (index == 0) {
             Node tmpHead = head;
@@ -70,9 +74,7 @@ public class MyLinkedListDouble {
 
     public String get(int index) {
 
-        if (index > size || index < 0) {
-            throw new RuntimeException("Введенный индекс больше/меньше чем размер");
-        }
+        checkIndex(index);
 
         if(index == 0) {
             return head.value;
@@ -93,9 +95,7 @@ public class MyLinkedListDouble {
 
     public String delete(int index) {
 
-        if (index > size || index < 0) {
-            throw new RuntimeException("Введенный индекс больше/меньше чем размер");
-        }
+        checkIndex(index);
 
         Node deletedNode;
 
@@ -112,9 +112,7 @@ public class MyLinkedListDouble {
         if(index == 0) {
 
             Node tmpHead = head;
-            Node tmpNext = tmpHead.next;
-
-            head = tmpNext;
+            head = tmpHead.next;
 
             size--;
             return tmpHead.value;
