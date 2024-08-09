@@ -123,15 +123,15 @@ public class MyArrayList {
         list.add("Donald",0);
         list.print();
 
-        list.delete(1);
+        System.out.println(list.delete(1));
         list.print();
 
         list.add("Trump");
         list.add("Kamala");
         list.add("Harris", 5);
         list.print();
-        list.delete(5);
-        list.delete(5);
+        System.out.println(list.delete(5));
+        System.out.println(list.delete(5));
         list.print();
     }
 
